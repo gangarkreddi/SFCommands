@@ -1,0 +1,22 @@
+//DB creation
+create or replace database EDW_DEV;
+
+create or replace schema EDW;
+create or replace schema OPS;
+create or replace schema RAW;
+
+use schema EDW;
+
+create or replace stage mystage;
+
+list @mystage;
+
+select $1,$2,$11 From @mystage/cm01APR2022bhav.csv.gz;
+
+copy into "EDW_DEV"."RAW"."NSE_STOCK_DAILY_DATA_F"
+from   @mystage pattern='.*cm.*.csv.gz'
+file_format = CM_STOCK_BHAV_CSV;
+
+SHOW FILE FORMATS;
+
+select count(*) from NSE_STOCK_DAILY_DATA_F limit 5;
